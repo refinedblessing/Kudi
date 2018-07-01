@@ -7,7 +7,8 @@
   "license": "MIT",
   "scripts": {
     "start": "webpack-dev-server --config webpack.config.development.js",
-    "build": "webpack -p --config webpack.config.production.js"
+    "prebuild": "rimraf docs/static",
+    "build": "cross-env NODE_ENV=production webpack -p --config webpack.config.production.js"
   },
   "dependencies": {
     "prop-types": "^15.6.2",
@@ -21,8 +22,10 @@
     "babel-preset-env": "^1.7.0",
     "babel-preset-react": "^6.24.1",
     "babel-preset-stage-0": "^6.24.1",
+    "cross-env": "^5.2.0",
     "css-loader": "^0.28.11",
     "html-webpack-plugin": "^3.2.0",
+    "rimraf": "^2.6.2",
     "style-loader": "^0.21.0",
     "webpack": "^4.13.0",
     "webpack-cli": "^3.0.8",
