@@ -1,13 +1,15 @@
 import React, { Component } from 'react';
 import { Header, Container } from 'semantic-ui-react';
+import Converter from './Converter.jsx';
 
 class App extends Component {
-  render () {
+  render() {
     return (
       <Container className="raised very padded text segment">
         <Header as="h1">Convert your Kudi</Header>
+        <Converter />
       </Container>
-    )
+    );
   }
 }
 
