@@ -4,7 +4,10 @@ const urlsToCache = self.__precacheManifest.map(({ url }) => url);
 
 // Cache Application
 self.addEventListener('install', (event) => {
-  event.waitUntil(caches.open(CACHE_NAME).then(cache => cache.addAll(urlsToCache)));
+  event.waitUntil(caches.open(CACHE_NAME)
+    .then(cache => cache.addAll([...urlsToCache, 'https://free.currencyconverterapi.com/api/v5/countries']))
+    // Force waiting ServiceWorker to become active ServiceWorker
+    .then(() => self.skipWaiting()));
 });
 
 // Serve from Cache or fallback to Network
