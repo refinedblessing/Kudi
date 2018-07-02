@@ -10,8 +10,8 @@ module.exports = {
     app: './src/index.js',
   },
   output: {
-    filename: 'bundle.[hash].js',
-    path: path.resolve(__dirname, 'docs/static'),
+    filename: 'js/bundle.[hash].js',
+    path: path.resolve(__dirname, 'docs'),
   },
   optimization: {
     splitChunks: {
@@ -55,6 +55,7 @@ module.exports = {
     }),
     new InjectManifest({
       swSrc: './public/service-worker.js',
+      importsDirectory: 'js',
     }),
   ],
 };
