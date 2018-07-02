@@ -30,14 +30,15 @@ class Converter extends Component {
     } = { ...this.state, [name]: value };
     const fromCurrencySymbol = currencySymbols[fromCurrencyID.slice(0, 2)];
     const toCurrencySymbol = currencySymbols[toCurrencyID.slice(0, 2)];
-    currencyConverter(input, fromCurrencyID, toCurrencyID, (err, convertedAmt = 0) => {
-      this.setState({
-        convertedAmt,
-        [name]: value,
-        fromCurrencySymbol,
-        toCurrencySymbol,
-      });
+    this.setState({
+      [name]: value,
+      fromCurrencySymbol,
+      toCurrencySymbol,
     });
+    if (fromCurrencyID && toCurrencyID) {
+      currencyConverter(input, fromCurrencyID, toCurrencyID)
+        .then(convertedAmt => this.setState({ convertedAmt }));
+    }
   }
 
   componentDidMount() {
@@ -58,7 +59,9 @@ class Converter extends Component {
 
   render() {
     const {
-      fromCurrencyID, toCurrencyID, input, convertedAmt, currencyIds, toCurrencySymbol, fromCurrencySymbol,
+      fromCurrencyID, toCurrencyID,
+      input, convertedAmt,
+      currencyIds, toCurrencySymbol, fromCurrencySymbol,
     } = this.state;
     return (
       <div className="Converter">

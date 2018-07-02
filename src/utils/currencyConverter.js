@@ -1,36 +1,32 @@
-import https from 'https';
+import axios from 'axios';
 
-const currencyConverter = (amount, fromCurrency, toCurrency, cb) => {
+import openConversionRatesDB from './openDb';
+
+const currencyConverter = (amount, fromCurrency, toCurrency) => {
+  if (!fromCurrency || !toCurrency) return Promise.resolve(0);
   const fromCurrencyID = encodeURIComponent(fromCurrency);
   const toCurrencyID = encodeURIComponent(toCurrency);
   const query = `${fromCurrencyID}_${toCurrencyID}`;
 
-  const url = `https://free.currencyconverterapi.com/api/v5/convert?q=${query}&compact=ultra`;
-  https.get(url, (res) => {
-    let body = '';
-
-    res.on('data', (chunk) => {
-      body += chunk;
-    });
-
-    res.on('end', () => {
-      try {
-        const jsonObj = JSON.parse(body);
-        const val = jsonObj[query];
-        if (val) {
-          const total = val * amount;
-          cb(null, Math.round(total * 100) / 100);
-        } else {
-          const err = new Error(`Value not found for ${query}`);
-          cb(err);
-        }
-      } catch (e) {
-        cb(e);
+  openConversionRatesDB
+    .get(query)
+    .then(({ rate }) => {
+      if (rate) {
+        const total = rate * amount;
+        return Math.round(total * 100) / 100;
       }
-    });
-  }).on('error', (e) => {
-    cb(e);
-  });
+    }).catch(err => err);
+
+  const url = `https://free.currencyconverterapi.com/api/v5/convert?q=${query}&compact=ultra`;
+  return axios.get(url)
+    .then(({ data }) => {
+      const rate = data[query];
+      if (rate) {
+        openConversionRatesDB.set(query, rate);
+        const total = rate * amount;
+        return Math.round(total * 100) / 100;
+      }
+    }).catch(err => err);
 };
 
 export default currencyConverter;
