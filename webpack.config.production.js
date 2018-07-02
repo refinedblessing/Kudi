@@ -1,5 +1,6 @@
 const webpack = require('webpack');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
+const {InjectManifest} = require('workbox-webpack-plugin');
 const path = require('path');
 
 module.exports = {
@@ -9,8 +10,8 @@ module.exports = {
     app: './src/index.js',
   },
   output: {
-    filename: 'static/bundle.[hash].js',
-    path: path.resolve(__dirname, 'docs'),
+    filename: 'bundle.[hash].js',
+    path: path.resolve(__dirname, 'docs/static'),
   },
   optimization: {
     splitChunks: {
@@ -51,6 +52,9 @@ module.exports = {
   plugins: [
     new HtmlWebpackPlugin({
       template: 'public/index.html',
+    }),
+    new InjectManifest({
+      swSrc: './public/service-worker.js',
     }),
   ],
 };

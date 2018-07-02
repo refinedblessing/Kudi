@@ -4,7 +4,7 @@ import { Dropdown } from 'semantic-ui-react';
 
 const Select = props => (
   <Dropdown
-    placeholder='Select CurrencyID'
+    placeholder={props.placeholder}
     fluid
     search
     selection
@@ -12,6 +12,7 @@ const Select = props => (
     name={props.name}
     onChange={props.handleChange}
     value={props.value}
+    style={{ margin: '10px auto', maxWidth: 500 }}
   />
 );
 
@@ -20,6 +21,7 @@ Select.propTypes = {
   handleChange: PropTypes.func,
   value: PropTypes.string,
   name: PropTypes.string,
+  placeholder: PropTypes.string,
 };
 
 export default Select;

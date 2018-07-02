@@ -5,8 +5,8 @@ import Converter from './Converter.jsx';
 class App extends Component {
   render() {
     return (
-      <Container className="raised very padded text segment">
-        <Header as="h1">Convert your Kudi</Header>
+      <Container className="raised very padded text segment" style={{'marginTop': 50}}>
+        <Header as="h1" style={{'textAlign': 'center'}}>Convert your Kudi</Header>
         <Converter />
       </Container>
     );
