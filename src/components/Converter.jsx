@@ -36,8 +36,16 @@ class Converter extends Component {
       toCurrencySymbol,
     });
     if (fromCurrencyID && toCurrencyID) {
-      currencyConverter(input, fromCurrencyID, toCurrencyID)
-        .then(convertedAmt => this.setState({ convertedAmt }));
+      if (fromCurrencyID === toCurrencyID) {
+        return this.setState({convertedAmt: input});
+      }
+
+      currencyConverter(fromCurrencyID, toCurrencyID)
+        .then((rate) => {
+          const total = rate * input;
+          const convertedAmt = Math.round(total * 100) / 100;
+          this.setState({ convertedAmt });
+        });
     }
   }
 

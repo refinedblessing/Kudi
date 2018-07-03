@@ -1,5 +1,6 @@
 const webpack = require('webpack');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
+const { InjectManifest } = require('workbox-webpack-plugin');
 
 const port = process.env.PORT || 3000;
 
@@ -39,11 +40,16 @@ module.exports = {
     new HtmlWebpackPlugin({
       template: 'public/index.html',
     }),
+    new InjectManifest({
+      swSrc: './public/service-worker.js',
+      importsDirectory: 'js',
+    }),
   ],
   devServer: {
     host: 'localhost',
     port,
     historyApiFallback: true,
     open: true,
+    contentBase: '/docs',
   },
 };

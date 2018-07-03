@@ -2,31 +2,28 @@ import axios from 'axios';
 
 import openConversionRatesDB from './openDb';
 
-const currencyConverter = (amount, fromCurrency, toCurrency) => {
+const currencyConverter = (fromCurrency, toCurrency) => {
   if (!fromCurrency || !toCurrency) return Promise.resolve(0);
+  if (fromCurrency === toCurrency) return Promise.resolve(1);
   const fromCurrencyID = encodeURIComponent(fromCurrency);
   const toCurrencyID = encodeURIComponent(toCurrency);
   const query = `${fromCurrencyID}_${toCurrencyID}`;
-
-  openConversionRatesDB
-    .get(query)
-    .then(({ rate }) => {
-      if (rate) {
-        const total = rate * amount;
-        return Math.round(total * 100) / 100;
-      }
-    }).catch(err => err);
-
   const url = `https://free.currencyconverterapi.com/api/v5/convert?q=${query}&compact=ultra`;
-  return axios.get(url)
-    .then(({ data }) => {
-      const rate = data[query];
-      if (rate) {
-        openConversionRatesDB.set(query, rate);
-        const total = rate * amount;
-        return Math.round(total * 100) / 100;
+
+  return openConversionRatesDB
+    .get(query)
+    .then((rateData) => {
+      if (rateData && rateData.rate) {
+        return Promise.resolve(rateData.rate);
       }
-    }).catch(err => err);
+      return axios.get(url)
+        .then(({ data }) => {
+          if (data && data[query]) {
+            openConversionRatesDB.set(query, data[query]);
+            return Promise.resolve(data[query]);
+          }
+        });
+    });
 };
 
 export default currencyConverter;

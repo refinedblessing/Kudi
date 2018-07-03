@@ -1,4 +1,4 @@
-importScripts("js/precache-manifest.c4fc635a8b34c1605134fb393237b3e9.js", "https://storage.googleapis.com/workbox-cdn/releases/3.3.1/workbox-sw.js");
+importScripts("js/precache-manifest.33f31f57a95524312852ad9d9527cf42.js", "https://storage.googleapis.com/workbox-cdn/releases/3.3.1/workbox-sw.js");
 
 const CACHE_NAME = 'currency-convert-cache';
 
