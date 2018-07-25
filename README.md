@@ -2,7 +2,7 @@
 
 ## ALC/GOOGLE/UDACITY Mobile Web Specialist Track Project
 
-[Try it out!](https://refinedblessing.github.io/udacity-currency-converter/)
+[Try it out!](https://refinedblessing.github.io/Kudi/)
 
 ### Convert your Kudi(Money)
 
